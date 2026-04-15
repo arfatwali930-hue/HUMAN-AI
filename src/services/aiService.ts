@@ -22,6 +22,10 @@ export async function humanizeText(text: string, language: string) {
   `;
 
   try {
+    if (!process.env.GEMINI_API_KEY) {
+      return { error: "Gemini API Key is missing. Please add it to your environment variables." };
+    }
+
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: prompt,
@@ -30,10 +34,14 @@ export async function humanizeText(text: string, language: string) {
       }
     });
 
-    return JSON.parse(response.text || "{}");
-  } catch (error) {
+    if (!response.text) {
+      return { error: "The AI returned an empty response. Please try again." };
+    }
+
+    return JSON.parse(response.text);
+  } catch (error: any) {
     console.error("Error humanizing text:", error);
-    return { humanizedText: text, changedWords: [] };
+    return { error: error?.message || "Failed to connect to the AI service." };
   }
 }
 
@@ -51,6 +59,8 @@ export async function getDefinition(word: string) {
   `;
 
   try {
+    if (!process.env.GEMINI_API_KEY) return null;
+
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: prompt,

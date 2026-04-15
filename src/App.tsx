@@ -97,6 +97,9 @@ export default function App() {
   
   const [copied, setCopied] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const apiKeyExists = !!process.env.GEMINI_API_KEY;
 
   // --- Effects ---
   useEffect(() => {
@@ -111,12 +114,22 @@ export default function App() {
   const handleHumanize = async () => {
     if (!inputText.trim()) return;
     setIsLoading(true);
-    const result = await humanizeText(inputText, selectedLang.name);
-    setOutputResult({
-      text: result.humanizedText,
-      highlights: result.changedWords || []
-    });
-    setIsLoading(false);
+    setError(null);
+    try {
+      const result = await humanizeText(inputText, selectedLang.name);
+      if (result.error) {
+        setError(result.error);
+      } else {
+        setOutputResult({
+          text: result.humanizedText,
+          highlights: result.changedWords || []
+        });
+      }
+    } catch (err) {
+      setError("An unexpected error occurred. Please check your connection.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleDictionaryLookup = async (e?: React.FormEvent) => {
@@ -341,9 +354,16 @@ export default function App() {
               onChange={(e) => setInputText(e.target.value)}
             />
             <div className="flex justify-between items-center">
-              <span className="text-xs text-gray-400">
-                {inputText.length} characters | {inputText.split(/\s+/).filter(Boolean).length} words
-              </span>
+              <div className="flex flex-col">
+                <span className="text-xs text-gray-400">
+                  {inputText.length} characters | {inputText.split(/\s+/).filter(Boolean).length} words
+                </span>
+                {!apiKeyExists && (
+                  <span className="text-[10px] text-red-500 font-bold uppercase mt-1">
+                    ⚠️ API Key Missing
+                  </span>
+                )}
+              </div>
               <Button 
                 className="px-8 py-3"
                 disabled={!inputText.trim() || isLoading}
@@ -382,6 +402,11 @@ export default function App() {
             </div>
             
             <div className="flex-1 min-h-[400px] bg-indigo-50/30 dark:bg-indigo-900/10 rounded-2xl p-6 overflow-y-auto text-lg leading-relaxed relative">
+              {error && (
+                <div className="absolute top-4 left-4 right-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-sm z-20">
+                  {error}
+                </div>
+              )}
               {!outputResult && !isLoading && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400 gap-4">
                   <Sparkles className="w-12 h-12 opacity-20" />
