@@ -256,14 +256,28 @@ export default function App() {
         {/* --- Hero Section --- */}
         <section className="text-center space-y-6 relative">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-500/10 blur-[120px] rounded-full -z-10" />
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-bold tracking-widest uppercase mb-4"
-          >
-            <Zap className="w-3 h-3" />
-            ProMax Ultra Legend Edition
-          </motion.div>
+          
+          <div className="flex flex-col items-center gap-4 mb-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-bold tracking-widest uppercase"
+            >
+              <Zap className="w-3 h-3" />
+              ProMax Ultra Legend Edition
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold tracking-widest uppercase"
+            >
+              <Check className="w-3 h-3" />
+              Free Forever
+            </motion.div>
+          </div>
+
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -505,24 +519,32 @@ export default function App() {
       </main>
 
       {/* --- Footer --- */}
-      <footer className="max-w-7xl mx-auto px-6 py-12 border-t border-gray-200 dark:border-white/10">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+      <footer className="border-t border-gray-100 dark:border-gray-800 py-12 mt-20">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
           <div className="flex items-center gap-2">
-            <Sparkles className="text-indigo-600 w-5 h-5" />
-            <span className="font-bold tracking-tighter">HUMAN AI</span>
+            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
+              <Sparkles className="text-white w-6 h-6" />
+            </div>
+            <span className="text-xl font-bold tracking-tight">HUMAN AI</span>
           </div>
           
-          <div className="flex gap-8 text-sm text-gray-500">
-            <a href="#" className="hover:text-indigo-500 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-indigo-500 transition-colors">Terms</a>
-            <a href="#" className="hover:text-indigo-500 transition-colors">API</a>
-            <a href="#" className="hover:text-indigo-500 transition-colors">Support</a>
+          <div className="flex flex-col items-center gap-2">
+            <p className="text-gray-500 text-sm">
+              © 2024 HUMAN AI. All rights reserved.
+            </p>
+            <motion.div 
+              whileHover={{ scale: 1.05 }}
+              className="px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 flex items-center gap-2"
+            >
+              <span className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Created by</span>
+              <span className="text-sm font-black bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">ARFAT</span>
+            </motion.div>
           </div>
 
-          <div className="text-center md:text-right">
-            <p className="text-xs text-gray-400 uppercase tracking-widest font-bold">
-              Created by <span className="text-indigo-600 dark:text-indigo-400">ARFAT</span>
-            </p>
+          <div className="flex gap-6 text-sm text-gray-500">
+            <a href="#" className="hover:text-indigo-600 transition-colors">Privacy</a>
+            <a href="#" className="hover:text-indigo-600 transition-colors">Terms</a>
+            <a href="#" className="hover:text-indigo-600 transition-colors">Contact</a>
           </div>
         </div>
       </footer>
