@@ -149,7 +149,10 @@ export default function App() {
     if (!highlights.length) return text;
 
     // Sort highlights by length descending to avoid partial matches inside longer matches
-    const sortedHighlights = [...highlights].sort((a, b) => b.length - a.length);
+    const validHighlights = highlights.filter(h => h && h.trim().length > 0);
+    if (!validHighlights.length) return text;
+
+    const sortedHighlights = [...validHighlights].sort((a, b) => b.length - a.length);
     
     // Create a regex that matches any of the highlights
     const escapedHighlights = sortedHighlights.map(h => h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
